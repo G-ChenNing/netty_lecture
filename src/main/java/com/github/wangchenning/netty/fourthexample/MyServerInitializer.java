@@ -1,5 +1,6 @@
 package com.github.wangchenning.netty.fourthexample;
 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -13,9 +14,10 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = ch.pipeline();
 
         //空闲状态检测(参数：在一段时间内没有读，没有写,没有读写)
-        pipeline.addLast(new IdleStateHandler(180,120,60,TimeUnit.SECONDS));
+        pipeline.addLast(new IdleStateHandler(10,5,8,TimeUnit.SECONDS));
         pipeline.addLast(new MyServerHandler());
 
 
     }
+
 }
