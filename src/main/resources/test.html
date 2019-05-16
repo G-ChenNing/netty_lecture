@@ -17,6 +17,9 @@
             socket.onmessage = function (ev) {
                 var ta = document.getElementById("responseTest");
                 ta.value = ta.value + "\n" + ev.data;
+                // client.send(new byte[]{(byte)0x89, (byte)0x00});ping
+
+
             }
             socket.onclose = function (ev) {
                 var ta = document.getElementById("responseTest");
@@ -26,6 +29,8 @@
                 var ta = document.getElementById("responseTest");
                 ta.value = ta.value + "\n" + "连接异常";
             }
+            new Buffer
+
         }else {
             alert("浏览器不支持")
         }
@@ -40,6 +45,8 @@
             }
 
         }
+
+
     </script>
 
 

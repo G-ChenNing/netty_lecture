@@ -1,20 +1,41 @@
 package com.github.wangchenning.netty.fifthexample;
 
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import java.time.LocalDateTime;
 
 /**
  * @author Musk
  */
-public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
-        System.out.println("收到消息：" + msg.text());
+    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) throws Exception {
+        if (msg instanceof PingWebSocketFrame) {
+            System.out.println("收到ping");
+            ChannelFuture channelFuture = ctx.channel().writeAndFlush(new PongWebSocketFrame(msg.content().retain()));
+            System.out.println(channelFuture.isSuccess());
+        }
 
-        ctx.channel().writeAndFlush(new TextWebSocketFrame("服务器时间：" + LocalDateTime.now()));
+        if (msg instanceof PongWebSocketFrame) {
+            System.out.println("客户端连上");
+        }
+
+        if (msg instanceof TextWebSocketFrame) {
+//            msg = (TextWebSocketFrame) msg;
+
+            System.out.println("收到消息：" + ((TextWebSocketFrame) msg).text());
+
+            ctx.channel().writeAndFlush(new TextWebSocketFrame("服务器时间：" + LocalDateTime.now()));
+        }
+
+
+//        ctx.fireChannelRead(msg);
 
     }
 
