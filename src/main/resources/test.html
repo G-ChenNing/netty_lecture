@@ -9,7 +9,8 @@
     <script type="text/javascript">
         var socket;
         if (window.WebSocket) {
-            socket = new WebSocket("ws://localhost:8899/ws");
+            socket = new WebSocket("ws://localhost:11231/ai_websocket");
+            // socket = new WebSocket("ws://localhost:8899/ws");
             socket.onopen = function (ev) {
                 var ta = document.getElementById("responseTest");
                 ta.value = "连接开启";
@@ -29,7 +30,7 @@
                 var ta = document.getElementById("responseTest");
                 ta.value = ta.value + "\n" + "连接异常";
             }
-            new Buffer
+
 
         }else {
             alert("浏览器不支持")
@@ -43,7 +44,9 @@
             } else {
                 alert("连接尚未开启");
             }
-
+            // var a = 0x09;
+            // var b = 0x0A;
+            // socket.send(b);
         }
 
 

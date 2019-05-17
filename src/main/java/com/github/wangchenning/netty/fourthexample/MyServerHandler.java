@@ -1,6 +1,7 @@
 package com.github.wangchenning.netty.fourthexample;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
@@ -25,7 +26,12 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
                 case READER_IDLE:
                     eventType = "读空闲";
                     ChannelFuture channelFuture = ctx.channel().writeAndFlush(new PingWebSocketFrame());
-                    System.out.println("是否成功"+channelFuture.isSuccess());
+
+                    channelFuture.addListener((ChannelFutureListener) future -> {
+                        System.out.println(future.isDone());
+                        System.out.println(future.isSuccess());
+                    });
+//                    System.out.println("是否成功"+channelFuture.isSuccess());
                     break;
                 case WRITER_IDLE:
                     eventType = "写空闲";
@@ -39,8 +45,11 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
             }
             System.out.println(ctx.channel().remoteAddress() + " 超时事件： " + eventType);
         }
-        ctx.fireChannelRead(evt);
+
+
+//        ctx.fireChannelRead(evt);
     }
+
 
 
 }
